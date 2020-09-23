@@ -22,7 +22,10 @@ function ListUsers(props) {
                 {Users.map(user => {
                     return (
                         <li key={user.id} onClick={() => handelRoute(user.id)}>
-                            <img src={user.avatar} alt={user.first_name} />
+                            <div className="box">
+                                <img className="avatar" src={user.avatar} alt={user.first_name} />
+                                <p>{`${user.first_name} ${user.last_name}`}</p>
+                            </div>
                         </li>
                     )
                 })}

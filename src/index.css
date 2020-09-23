@@ -1,0 +1,13 @@
+ul {
+    list-style: none;
+}
+
+.avatar {
+    border-radius: 50%;
+    margin: 10px 0;
+}
+
+.box {
+    display: inline-block;
+    text-align: center;
+}
