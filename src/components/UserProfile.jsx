@@ -23,7 +23,7 @@ function UserProfile(props) {
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false);
     const [unavailableHours, setUnavailableHours] = useState([]);
-
+    const [onPosting, setOnPosting] = useState(false)
 
     useEffect(() => {
         setLoading(true);
@@ -66,6 +66,7 @@ function UserProfile(props) {
     const handleSubmit = () => {
         console.log(timeSlot, "on submit");
         if (eventTitle && timeSlot) {
+            setOnPosting(true);
             const hours = new Date(timeSlot).getHours();
             const end = new Date(timeSlot);
             end.setHours(hours + 1);
@@ -89,13 +90,16 @@ function UserProfile(props) {
                     console.log(data, "post data res");
                     setEventTitle("");
                     setTimeSlot([]);
+                    setOnPosting(false)
                 })
                 .catch(err => console.log(err))
         } else {
             setError("Please fill all the fields");
+            setOnPosting(false)
             setTimeout(() => {
                 setError("")
             }, 2000);
+
         }
     }
 
@@ -137,15 +141,6 @@ function UserProfile(props) {
                                                 <Meta title={`${user.first_name} ${user.last_name}}`} description={user.email} />
                                             </Card>
 
-                                            {/* <RangePicker
-                                                showTime={{ format: 'HH:mm' }}
-                                                format="YYYY-MM-DD HH:mm"
-                                                onChange={onChange}
-                                                onOk={onOk}
-                                                disabledHours={() => unavailableHours}
-                                                disabledMinutes={() => unavailableMinutes}
-                                            /> */}
-
                                             <TimePicker
                                                 defaultValue={moment("00:00", format)}
                                                 format={format}
@@ -156,9 +151,9 @@ function UserProfile(props) {
 
                                             <Input type="text" placeholder="Enter Event Name" onChange={({ target }) => setEventTitle(target.value)} value={eventTitle} onKeyDown={handleEnter} />
 
-                                            <Button type="primary" onClick={handleSubmit}>
+                                            <Button type="primary" onClick={handleSubmit} loading={onPosting}>
                                                 Submit
-                                    </Button>
+                                            </Button>
                                         </Space>
                                     </>
                         }
