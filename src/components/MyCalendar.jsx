@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { eventAPIUrl } from './static.js';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 const localizer = momentLocalizer(moment);
+
+
 
 const MyCalendar = props => {
     const [eventsList, setEventsList] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:8000/api/v1/events")
+        fetch(`${eventAPIUrl}/events`)
             .then(res => res.json())
             .then(data => {
                 console.log(data, "event data");

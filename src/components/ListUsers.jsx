@@ -1,26 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { userAPIUrl } from './static.js';
+
 import { Row, Col, Button, Input, DatePicker, Space, Layout, Card } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 const { Search } = Input;
 const { Meta } = Card;
 
-const url = "https://reqres.in/api/users";
-
-
+console.log(userAPIUrl, "userAPIUrl ...");
 function ListUsers(props) {
     const [users, setUsers] = useState([]);
     const [inputVal, setInputVal] = useState("")
-    let [filteredUsers, setFilteredUsers] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetchUsers(url)
+        setLoading(true);
+
+        setTimeout(() => {
+            fetchUsers(userAPIUrl);
+        }, 2000);
+
     }, []);
 
     const fetchUsers = (url) => {
         fetch(url)
             .then(res => res.json())
-            .then(data => setUsers(data.data))
+            .then(data => {
+                setUsers(data.data);
+                setLoading(false);
+            })
             .catch(err => console.log(err));
     }
 
@@ -45,25 +54,34 @@ function ListUsers(props) {
 
     const renderUsers = (users) => {
         return (
-            <Row gutter={[20, 20]} justify="center">
+            <>
                 {
-                    users.map(user => {
-                        return (
-                            <li key={user.id} onClick={() => handelRoute(user.id)}>
-                                <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
-                                    <Card
-                                        hoverable
-                                        style={{ width: 240 }}
-                                        cover={<img alt={user.first_name} src={user.avatar} />}
-                                    >
-                                        <Meta title={`${user.first_name} ${user.last_name}`} description="" />
-                                    </Card>
-                                </Col>
-                            </li>
-                        )
-                    })
+                    loading ?
+                        < Card style={{ width: 300, marginTop: 16 }} loading={true} />
+                        :
+
+                        < Row gutter={[20, 20]} justify="center">
+
+                            {
+                                !users ? "" : users.map(user => {
+                                    return (
+                                        <li key={user.id} onClick={() => handelRoute(user.id)}>
+                                            <Col xs={{ span: 5, offset: 1 }} lg={{ span: 6, offset: 2 }}>
+                                                <Card
+                                                    hoverable
+                                                    style={{ width: 240 }}
+                                                    cover={<img alt={user.first_name} src={user.avatar} />}
+                                                >
+                                                    <Meta title={`${user.first_name} ${user.last_name}`} description="" />
+                                                </Card>
+                                            </Col>
+                                        </li>
+                                    )
+                                })
+                            }
+                        </Row >
                 }
-            </Row >
+            </>
         )
     }
 
@@ -71,7 +89,7 @@ function ListUsers(props) {
         <Layout>
             <Header className="site-layout-sub-header-background" style={{ padding: 0 }}>
                 <div className="container">
-                    <Link className="logo">AppLogo</Link>
+                    <Link to="/" className="logo">AppLogo</Link>
 
                     <div>
                         <Search
