@@ -24,7 +24,7 @@ export default function Home(props) {
   return (
     <div>
       <Layout>
-        <Sider
+        {/* <Sider
           breakpoint="lg"
           collapsedWidth="0"
           onBreakpoint={broken => {
@@ -43,8 +43,8 @@ export default function Home(props) {
                 </Menu.Item>
               )
             })}
-          </Menu>
-        </Sider>
+          </Menu> 
+        </Sider> */}
         <Layout>
           <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />
           <Content style={{ margin: '24px 16px 0' }}>
@@ -54,7 +54,7 @@ export default function Home(props) {
           </Content>
         </Layout>
       </Layout>
-    </div>
+    </div >
   )
 }
 

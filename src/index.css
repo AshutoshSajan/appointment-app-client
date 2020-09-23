@@ -11,3 +11,15 @@ ul {
     display: inline-block;
     text-align: center;
 }
+
+.logo {
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    margin: 0 40px;
+    justify-content: space-between;
+}

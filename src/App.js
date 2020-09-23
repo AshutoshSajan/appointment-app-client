@@ -7,20 +7,16 @@ import Home from './components/Home'
 import ListUsers from './components/ListUsers';
 import UserProfile from './components/UserProfile';
 
-
-
-
-
 function App() {
   return (
     <div className="App">
       {/* <Home /> */}
-      <Layout>
-        <Switch>
-          <Route exact path="/" component={ListUsers} />
-          <Route path="/users/:id" component={UserProfile} />
-        </Switch>
-      </Layout>
+      {/* <Layout> */}
+      <Switch>
+        <Route exact path="/" component={ListUsers} />
+        <Route path="/users/:id" component={UserProfile} />
+      </Switch>
+      {/* </Layout> */}
 
     </div>
   );
