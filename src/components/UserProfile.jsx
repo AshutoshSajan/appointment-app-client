@@ -13,7 +13,7 @@ function UserProfile(props) {
     useEffect(() => {
         const id = window.location.pathname.split("/").pop() || ""
         fetchUser(url, id);
-    })
+    }, [])
 
 
     const fetchUser = (url, id) => {
@@ -29,7 +29,7 @@ function UserProfile(props) {
     const onOk = (value) => {
         console.log('onOk: ', value);
         moment.format("YYYY-MM-DD HH:mm");
-        console.log('onOk Formatted Selected Time: ', dateString);
+        // console.log('onOk Formatted Selected Time: ', dateString);
     }
 
     return (
