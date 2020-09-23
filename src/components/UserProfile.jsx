@@ -9,25 +9,39 @@ import { Row, Col, Button, Input, DatePicker, Space, Card, Layout, TimePicker, A
 const { RangePicker } = TimePicker;
 const { Header, Content } = Layout;
 
-const timeFormat = 'HH:mm';
-
-
+// const timeFormat = 'HH:mm';
 const { Meta } = Card;
 
-const format = "YYYY-MM-DD HH:mm:ss"
+const dateFormat = "YYYY-MM-DD HH:mm:ss"
+const format = "HH";
+
 
 function UserProfile(props) {
     const [user, setUser] = useState({});
     const [eventTitle, setEventTitle] = useState("");
-    const [timeSlot, setTimeSlot] = useState([]);
+    const [timeSlot, setTimeSlot] = useState(null);
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false);
+    const [unavailableHours, setUnavailableHours] = useState([]);
+
 
     useEffect(() => {
         setLoading(true);
         const id = window.location.pathname.split("/").pop() || ""
         fetchUser(userAPIUrl, id);
+        fetchEvents(eventAPIUrl);
     }, [])
+
+    const fetchEvents = (url) => {
+        fetch(`${url}/events`).then(res => res.json()).then(({ events }) => {
+            let hours = events.map(event => {
+                return new Date(event.start).getHours();
+            })
+            setUnavailableHours(hours);
+
+            console.log(hours, events, "events data");
+        })
+    }
 
 
     const fetchUser = (url, id) => {
@@ -44,21 +58,24 @@ function UserProfile(props) {
     }
 
     const onOk = (value) => {
-        if (value.length >= 2 && value[0] && value[1]) {
-            const date = value.map(val => {
-                return moment(val._d).format(format);
-            })
-            setTimeSlot(date);
-        }
-
+        console.log(value, "onok..");
+        const date = moment(value._d).format(dateFormat);
+        setTimeSlot(date);
     }
 
     const handleSubmit = () => {
-        if (eventTitle && timeSlot.length >= 2) {
+        console.log(timeSlot, "on submit");
+        if (eventTitle && timeSlot) {
+            const hours = new Date(timeSlot).getHours();
+            const end = new Date(timeSlot);
+            end.setHours(hours + 1);
+
+            // console.log(hours, "hours", timeSlot, "timeSlot", end, "end", end.getHours(), "endHours");
+
             const data = {
                 title: eventTitle,
-                start: new Date(timeSlot[0]),
-                end: new Date(timeSlot[1])
+                start: new Date(timeSlot),
+                end
             }
 
             fetch(`${eventAPIUrl}/events`, {
@@ -83,7 +100,6 @@ function UserProfile(props) {
     }
 
     const handleEnter = (e) => {
-        console.log(e);
         if (e.keyCode === 13) {
             return handleSubmit();
         } else return
@@ -121,11 +137,21 @@ function UserProfile(props) {
                                                 <Meta title={`${user.first_name} ${user.last_name}}`} description={user.email} />
                                             </Card>
 
-                                            <RangePicker
+                                            {/* <RangePicker
                                                 showTime={{ format: 'HH:mm' }}
                                                 format="YYYY-MM-DD HH:mm"
                                                 onChange={onChange}
                                                 onOk={onOk}
+                                                disabledHours={() => unavailableHours}
+                                                disabledMinutes={() => unavailableMinutes}
+                                            /> */}
+
+                                            <TimePicker
+                                                defaultValue={moment("00:00", format)}
+                                                format={format}
+                                                onChange={onChange}
+                                                onOk={onOk}
+                                                disabledHours={() => unavailableHours}
                                             />
 
                                             <Input type="text" placeholder="Enter Event Name" onChange={({ target }) => setEventTitle(target.value)} value={eventTitle} onKeyDown={handleEnter} />

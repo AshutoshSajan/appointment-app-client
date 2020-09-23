@@ -13,7 +13,7 @@ const MyCalendar = props => {
         fetch(`${eventAPIUrl}/events`)
             .then(res => res.json())
             .then(data => {
-                console.log(data, "event data");
+                console.log(data, "my calender events list data");
                 setEventsList(data.events)
             }).catch(err => {
                 console.log(err);
