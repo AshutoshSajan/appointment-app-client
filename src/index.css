@@ -5,6 +5,7 @@ ul {
 .avatar {
     border-radius: 50%;
     margin: 10px 0;
+    cursor: pointer;
 }
 
 .box {
@@ -16,10 +17,15 @@ ul {
     color: white;
     font-weight: bold;
     cursor: pointer;
+    background: #111;
 }
 
 .container {
     display: flex;
     margin: 0 40px;
     justify-content: space-between;
+}
+
+.ant-layout-sider-dark {
+    background: #fff !important;
 }

@@ -1,18 +1,12 @@
 import React from 'react'
-import { withRouter, Switch, Route } from 'react-router-dom'
-
-import UserProfile from './components/UserProfile'
-import ListUsers from './components/ListUsers'
+import Home from './components/Home'
 
 function App() {
   return (
     <div className="App">
-      <Switch>
-        <Route exact path="/" component={ListUsers} />
-        <Route path="/users/:id" component={UserProfile} />
-      </Switch>
+      <Home />
     </div>
   )
 }
 
-export default withRouter(App)
+export default App
